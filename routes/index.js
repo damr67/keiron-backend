@@ -49,6 +49,28 @@ router.get('/api/tickets', async (req, res) => {
   });
 });
 
+// Get All Tickets
+router.get('/api/tickets/user', async (req, res) => {
+  const { id_user } = req.query;
+
+  connection.query(
+    `SELECT * FROM tickets WHERE \`id_user\` = ${id_user};`,
+    function (err, rows, fields) {
+      if (!!err) {
+        res.status(500).json({ message: 'Interal server err: DB' });
+      } else {
+        const queryData = {
+          rows,
+          fields
+        };
+        res
+          .status(200)
+          .json({ message: 'Successful query', data: queryData.rows });
+      }
+    }
+  );
+});
+
 // Add Tickets
 router.get('/api/tickets/add', async (req, res) => {
   const { id_user, description, ticket_pedido } = req.query;
@@ -98,6 +120,21 @@ router.get('/api/tickets/update', async (req, res) => {
 router.get('/api/tickets/asign', async (req, res) => {
   const { id, id_user } = req.query;
   const ASIGN_TICKET = `UPDATE \`tickets\` SET \`id_user\`= \'${id_user}\' WHERE id = ${id}`;
+  connection.query(ASIGN_TICKET, function (err, results) {
+    if (!!err) {
+      res
+        .status(500)
+        .json({ message: `Interal server err: cannot insert ${err}` });
+    } else {
+      res.status(200).json({ message: 'Successful query', data: results });
+    }
+  });
+});
+
+// Update Tickets
+router.get('/api/tickets/set', async (req, res) => {
+  const { id, ticket_pedido } = req.query;
+  const ASIGN_TICKET = `UPDATE \`tickets\` SET \`ticket_pedido\`= \'${ticket_pedido}\' WHERE id = ${id}`;
   connection.query(ASIGN_TICKET, function (err, results) {
     if (!!err) {
       res
