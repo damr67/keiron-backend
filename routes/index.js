@@ -59,7 +59,7 @@ router.get('/api/tickets/add', async (req, res) => {
         .status(500)
         .json({ message: `Interal server err: cannot insert ${err}` });
     } else {
-      res.status(200).json({ message: 'Successful query', results: results });
+      res.status(200).json({ message: 'Successful query', data: results });
     }
   });
 });
@@ -74,7 +74,7 @@ router.get('/api/tickets/delete', async (req, res) => {
         .status(500)
         .json({ message: `Interal server err: cannot insert ${err}` });
     } else {
-      res.status(200).json({ message: 'Successful query', results: results });
+      res.status(200).json({ message: 'Successful query', data: results });
     }
   });
 });
@@ -89,7 +89,7 @@ router.get('/api/tickets/update', async (req, res) => {
         .status(500)
         .json({ message: `Interal server err: cannot insert ${err}` });
     } else {
-      res.status(200).json({ message: 'Successful query', results: results });
+      res.status(200).json({ message: 'Successful query', data: results });
     }
   });
 });
@@ -97,27 +97,40 @@ router.get('/api/tickets/update', async (req, res) => {
 // Update Tickets
 router.get('/api/tickets/asign', async (req, res) => {
   const { id, id_user } = req.query;
-  const UPDATE_TICKET = `UPDATE \`tickets\` SET \`id_user\`= \'${id_user}\' WHERE id = ${id}`;
-  connection.query(UPDATE_TICKET, function (err, results) {
+  const ASIGN_TICKET = `UPDATE \`tickets\` SET \`id_user\`= \'${id_user}\' WHERE id = ${id}`;
+  connection.query(ASIGN_TICKET, function (err, results) {
     if (!!err) {
       res
         .status(500)
         .json({ message: `Interal server err: cannot insert ${err}` });
     } else {
-      res.status(200).json({ message: 'Successful query', results: results });
+      res.status(200).json({ message: 'Successful query', data: results });
     }
   });
 });
 
 // Update Tickets
-router.get('/api/auth', async (req, res) => {
+router.get('/api/auth/login', async (req, res) => {
   const { mail, pass } = req.query;
-  const UPDATE_TICKET = `SELECT \`id\`, \`id_tipouser\`, \`nombre\`, \`mail\`, \`pass\` FROM \`usuarios\` WHERE mail = \'${mail}\' AND pass = \'${pass}\';`;
-  connection.query(UPDATE_TICKET, function (err, results) {
+  const LOGIN_QUERY = `SELECT \`id\`, \`id_tipouser\`, \`nombre\`, \`mail\`, \`pass\` FROM \`usuarios\` WHERE mail = \'${mail}\' AND pass = \'${pass}\';`;
+  connection.query(LOGIN_QUERY, function (err, results) {
     if (!!err) {
       res
         .status(500)
         .json({ message: `Interal server err: cannot insert ${err}` });
+    } else {
+      res.status(200).json({ message: 'Successful query', data: results });
+    }
+  });
+});
+
+// Update Tickets
+router.get('/api/auth/register', async (req, res) => {
+  const { nombre, mail, pass } = req.query;
+  const UPDATE_TICKET = `INSERT INTO \`usuarios\`(\`nombre\`, \`mail\`, \`pass\`) VALUES (\'${nombre}\', \'${mail}\',\'${pass}\');`;
+  connection.query(UPDATE_TICKET, function (err, results) {
+    if (!!err) {
+      res.status(200).json(false);
     } else {
       res.status(200).json({ message: 'Successful query', data: results });
     }

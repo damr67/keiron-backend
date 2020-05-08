@@ -4,8 +4,8 @@
   "description": "Keiron Test",
   "main": "index.js",
   "scripts": {
-    "start-dev": "cross-env NODE_ENV=development ./node_modules/.bin/nodemon --inspect=0.0.0.0:9228 index.js -w .",
-    "start": "NODE_ENV=production node app.js"
+    "start": "cross-env NODE_ENV=development ./node_modules/.bin/nodemon --inspect=0.0.0.0:9228 index.js -w .",
+    "start-prod": "NODE_ENV=production node app.js"
   },
   "repository": {
     "type": "git",
