@@ -51,8 +51,8 @@ router.get('/api/tickets', async (req, res) => {
 
 // Add Tickets
 router.get('/api/tickets/add', async (req, res) => {
-  const { id_user, ticket_pedido } = req.query;
-  const ADD_TICKET = `INSERT INTO \`tickets\` (\`id\`, \`id_user\`, \`ticket_pedido\`) VALUES (NULL, ${id_user},\'${ticket_pedido}\');`;
+  const { id_user, description, ticket_pedido } = req.query;
+  const ADD_TICKET = `INSERT INTO \`tickets\` (\`id_user\`, \`description\`, \`ticket_pedido\`) VALUES (${id_user}, \'${description}\' ,${ticket_pedido});`;
   connection.query(ADD_TICKET, function (err, results) {
     if (!!err) {
       res
@@ -81,8 +81,8 @@ router.get('/api/tickets/delete', async (req, res) => {
 
 // Update Tickets
 router.get('/api/tickets/update', async (req, res) => {
-  const { id, id_user, ticket_pedido } = req.query;
-  const UPDATE_TICKET = `UPDATE \`tickets\` SET \`id_user\`= \'${id_user}\', \`ticket_pedido\`= \'${ticket_pedido}\' WHERE id = ${id}`;
+  const { id, id_user, ticket_pedido, description } = req.query;
+  const UPDATE_TICKET = `UPDATE \`tickets\` SET \`id_user\`= \'${id_user}\', \`description\`= \'${description}\',  \`ticket_pedido\`= \'${ticket_pedido}\' WHERE id = ${id}`;
   connection.query(UPDATE_TICKET, function (err, results) {
     if (!!err) {
       res
@@ -112,7 +112,7 @@ router.get('/api/tickets/asign', async (req, res) => {
 // Update Tickets
 router.get('/api/auth/login', async (req, res) => {
   const { mail, pass } = req.query;
-  const LOGIN_QUERY = `SELECT \`id\`, \`id_tipouser\`, \`nombre\`, \`mail\`, \`pass\` FROM \`usuarios\` WHERE mail = \'${mail}\' AND pass = \'${pass}\';`;
+  const LOGIN_QUERY = `SELECT \`id_user\`, \`id_tipouser\`, \`nombre\`, \`mail\`, \`pass\` FROM \`usuarios\` WHERE mail = \'${mail}\' AND pass = \'${pass}\';`;
   connection.query(LOGIN_QUERY, function (err, results) {
     if (!!err) {
       res
