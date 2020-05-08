@@ -109,4 +109,19 @@ router.get('/api/tickets/asign', async (req, res) => {
   });
 });
 
+// Update Tickets
+router.get('/api/auth', async (req, res) => {
+  const { mail, pass } = req.query;
+  const UPDATE_TICKET = `SELECT \`id\`, \`id_tipouser\`, \`nombre\`, \`mail\`, \`pass\` FROM \`usuarios\` WHERE mail = \'${mail}\' AND pass = \'${pass}\';`;
+  connection.query(UPDATE_TICKET, function (err, results) {
+    if (!!err) {
+      res
+        .status(500)
+        .json({ message: `Interal server err: cannot insert ${err}` });
+    } else {
+      res.status(200).json({ message: 'Successful query', data: results });
+    }
+  });
+});
+
 module.exports = router;
